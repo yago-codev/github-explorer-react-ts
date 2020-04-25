@@ -1,4 +1,5 @@
 import React, { useState, useEffect, FormEvent } from 'react';
+import { Link } from 'react-router-dom';
 import { FiChevronRight } from 'react-icons/fi';
 import { Animated } from 'react-animated-css';
 
@@ -73,14 +74,18 @@ const Dashboard: React.FC = () => {
       <Animated
         animationIn="fadeInLeft"
         animationOut="fadeOut"
+        animationInDelay={500}
         isVisible={true}
       >
-        <img src={logoImg} alt="Github Explorer" />
+        <Link to="/">
+          <img src={logoImg} alt="Github Explorer" />
+        </Link>
       </Animated>
 
       <Animated
         animationIn="fadeInRight"
         animationOut="fadeOut"
+        animationInDelay={1000}
         isVisible={true}
       >
         <Title>Explore repositórios no Github</Title>
@@ -89,6 +94,7 @@ const Dashboard: React.FC = () => {
       <Animated
         animationIn="fadeInLeft"
         animationOut="fadeOut"
+        animationInDelay={1500}
         isVisible={true}
       >
         <Form
@@ -109,28 +115,32 @@ const Dashboard: React.FC = () => {
         </Form>
       </Animated>
 
-      {/* {inputError && <Error>{inputError}</Error>} */}
-
       <Repositories>
         {repositories.map((repository) => (
-          <a
-            key={repository.full_name}
-            href="teste"
-            className="animated zoomInUp"
+          <Animated
+            animationIn="fadeInUp"
+            animationOut="fadeOut"
+            animationInDelay={2000}
+            isVisible={true}
           >
-            <img
-              src={repository.owner.avatar_url}
-              alt={repository.owner.login}
-            />
-            <div>
-              <strong>{repository.full_name}</strong>
-              <p>{repository.description}</p>
-            </div>
+            <Link
+              key={repository.full_name}
+              to={`/repository/${repository.full_name}`}
+            >
+              <img
+                src={repository.owner.avatar_url}
+                alt={repository.owner.login}
+              />
+              <div>
+                <strong>{repository.full_name}</strong>
+                <p>{repository.description}</p>
+              </div>
 
-            <div>
-              <FiChevronRight size={20} />
-            </div>
-          </a>
+              <div>
+                <FiChevronRight size={20} />
+              </div>
+            </Link>
+          </Animated>
         ))}
       </Repositories>
     </>

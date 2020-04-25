@@ -74,6 +74,10 @@ export const Repositories = styled.div`
   max-width: 700px;
   margin-top: 80px;
 
+  .animated + div {
+    margin-top: 16px;
+  }
+
   a {
     width: 100%;
     background: #fdfdfd;
