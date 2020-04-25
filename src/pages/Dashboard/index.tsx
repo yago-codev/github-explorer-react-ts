@@ -6,7 +6,7 @@ import api from '../../services/api';
 
 import logoImg from '../../assets/logo.svg';
 
-import { Title, Form, Repositories } from './styles';
+import { Title, Form, Repositories, Error } from './styles';
 
 interface Repository {
   full_name: string;
@@ -20,22 +20,35 @@ interface Repository {
 const Dashboard: React.FC = () => {
   const [newRepo, setNewRepo] = useState('');
   const [repositories, setRepositories] = useState<Repository[]>([]);
-  const [animated, setAnimated] = useState(false);
+  const [animateError, setAnimateError] = useState(false);
+  const [inputError, setInputError] = useState('');
 
   async function handleAddRepository(
     event: FormEvent<HTMLFormElement>,
   ): Promise<void> {
     event.preventDefault();
 
-    const response = await api.get<Repository>(`/repos/${newRepo}`);
+    if (!newRepo) {
+      setInputError('Por favor, informe o autor/nome do repositório.');
+      setAnimateError(true);
+      return;
+    }
 
-    const repository = response.data;
+    try {
+      const response = await api.get<Repository>(`/repos/${newRepo}`);
 
-    setRepositories([...repositories, repository]);
+      const repository = response.data;
 
-    setAnimated(true);
+      setRepositories([...repositories, repository]);
 
-    setNewRepo('');
+      setNewRepo('');
+
+      setInputError('');
+    } catch (error) {
+      setInputError('Não foi possível encontrar o repositório.');
+      setAnimateError(true);
+      setNewRepo('');
+    }
   }
 
   return (
@@ -61,41 +74,48 @@ const Dashboard: React.FC = () => {
         animationOut="fadeOut"
         isVisible={true}
       >
-        <Form onSubmit={handleAddRepository}>
+        <Form
+          onSubmit={handleAddRepository}
+          className={animateError ? 'animated tada' : ''}
+          hasError={!!inputError}
+        >
           <input
             type="text"
-            placeholder="Digite o nome do repositório"
+            placeholder={
+              inputError ? inputError : 'Digite o nome do repositório'
+            }
             value={newRepo}
             onChange={(e) => setNewRepo(e.target.value)}
+            autoFocus
           />
           <button type="submit">Pesquisar</button>
         </Form>
       </Animated>
 
-      <Animated
-        animationIn="fadeInUp"
-        animationOut="fadeOut"
-        isVisible={animated}
-      >
-        <Repositories>
-          {repositories.map((repository) => (
-            <a key={repository.full_name} href="teste">
-              <img
-                src={repository.owner.avatar_url}
-                alt={repository.owner.login}
-              />
-              <div>
-                <strong>{repository.full_name}</strong>
-                <p>{repository.description}</p>
-              </div>
+      {/* {inputError && <Error>{inputError}</Error>} */}
 
-              <div>
-                <FiChevronRight size={20} />
-              </div>
-            </a>
-          ))}
-        </Repositories>
-      </Animated>
+      <Repositories>
+        {repositories.map((repository) => (
+          <a
+            key={repository.full_name}
+            href="teste"
+            className="animated zoomInUp"
+          >
+            <img
+              src={repository.owner.avatar_url}
+              alt={repository.owner.login}
+            />
+            <div>
+              <strong>{repository.full_name}</strong>
+              <p>{repository.description}</p>
+            </div>
+
+            <div>
+              <FiChevronRight size={20} />
+            </div>
+          </a>
+        ))}
+      </Repositories>
     </>
   );
 };
