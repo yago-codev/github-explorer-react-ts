@@ -7,7 +7,7 @@ import api from '../../services/api';
 
 import logoImg from '../../assets/logo.svg';
 
-import { Title, Form, Repositories, Error } from './styles';
+import { Title, Form, Repositories } from './styles';
 
 interface Repository {
   full_name: string;
@@ -122,11 +122,9 @@ const Dashboard: React.FC = () => {
             animationOut="fadeOut"
             animationInDelay={2000}
             isVisible={true}
+            key={repository.full_name}
           >
-            <Link
-              key={repository.full_name}
-              to={`/repository/${repository.full_name}`}
-            >
+            <Link to={`/repository/${repository.full_name}`}>
               <img
                 src={repository.owner.avatar_url}
                 alt={repository.owner.login}
