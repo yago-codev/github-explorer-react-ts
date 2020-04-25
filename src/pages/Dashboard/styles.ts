@@ -86,6 +86,7 @@ export const Repositories = styled.div`
     }
 
     div {
+      max-width: 80%;
       margin-left: 16px;
 
       strong {
