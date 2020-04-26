@@ -38,6 +38,7 @@ export const RepositoryInfo = styled.section`
   border-radius: 5px;
   padding: 30px;
   box-shadow: 10px 10px 10px #5140a9, -10px -10px 10px #9678ff;
+  margin-bottom: 64px;
 
   header {
     display: flex;
@@ -93,12 +94,6 @@ export const RepositoryInfo = styled.section`
 `;
 
 export const Issues = styled.div`
-  margin-top: 80px;
-
-  .animated + div {
-    margin-top: 16px;
-  }
-
   a {
     width: 100%;
     background: #fdfdfd;
@@ -109,10 +104,7 @@ export const Issues = styled.div`
     align-items: center;
     box-shadow: 10px 10px 10px #5140a9, -10px -10px 10px #9678ff;
     transition: background-color 0.1s;
-
-    & + a {
-      margin-top: 16px;
-    }
+    margin-top: 16px;
 
     &:hover {
       background: ${shade(0.02, '#fdfdfd')};
